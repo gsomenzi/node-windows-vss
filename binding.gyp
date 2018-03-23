@@ -5,7 +5,7 @@
         "<!(node -e \"require('nan')\")"
       ],
       "target_name": "addon",
-      "sources": [ "example.cc", 'src/VssController.h', 'src/VssController.cpp' ]
+      "sources": [ "src/index.cc", 'src/VssController.h', 'src/VssController.cc' ]
     }
   ]
 }
