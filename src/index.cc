@@ -1,5 +1,6 @@
 #include <nan.h>
-#include "src/VssController.h"
+#include <string>
+#include "VssController.h"
 
 using v8::Function;
 using v8::Local;
@@ -20,23 +21,26 @@ VSS_SNAPSHOT_PROP propriedadesSnapshot;
 
 void RunCallback(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 	// DEFINE VARIAVEIS
-  v8::Local<v8::Function> cb = info[1].As<v8::Function>();
-	String::Utf8Value s(info[0]);
+	v8::Local<v8::Function> cb = info[1].As<v8::Function>();
+	String::Utf8Value utf8val(info[0]);
 	// PARSE E CONVERTE UNIDADE DE DISCO
-	std::string strinput(*s);
-	char * writable = new char[strinput.size() + 1];
-	std::copy(strinput.begin(), strinput.end(), writable);
-	writable[strinput.size()] = '\0';
-	const size_t cSize = strlen(writable) + 1;
-	wstring wc(cSize, L'#');
-	mbstowcs(&wc[0], writable, cSize);
-	wchar_t* wc2 = const_cast<wchar_t*>(wc.c_str());
+	std::string strvolume(*utf8val);
+	if (strvolume.back() != '\\') {
+		strvolume = strvolume + '\\';
+	}
+	char * charvolume = new char[strvolume.size() + 1];
+	std::copy(strvolume.begin(), strvolume.end(), charvolume);
+	charvolume[strvolume.size()] = '\0';
+	const size_t charvolumesize = strlen(charvolume) + 1;
+	wstring wstrvolume(charvolumesize, L'#');
+	mbstowcs(&wstrvolume[0], charvolume, charvolumesize);
+	wchar_t* wcharvolume = const_cast<wchar_t*>(wstrvolume.c_str());
 	// VSS
 	VssController *vssController = new VssController();
 	vssController->InicializarBackup();
 	vssController->ConfigurarBackup(VSS_BT_INCREMENTAL, VSS_CTX_BACKUP);
 	snapshotSetId = vssController->IniciarSnapshotSet();
-	snapshotId = vssController->AdicionarUnidade(wc2);
+	snapshotId = vssController->AdicionarUnidade(wcharvolume);
 	vssController->PepararBackup();
 	vssController->ExecutarSnapshot();
 	propriedadesSnapshot = vssController->PropriedadesSnapshot(snapshotId);
@@ -46,11 +50,16 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 	vssController->FinalizarBackup(propriedadesSnapshot);
 	// CALLBACK
 	v8::Local<v8::Value> argv[2] = { Nan::Null(), Nan::New(str).ToLocalChecked() };
-  Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, 2, argv);
+	Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, 2, argv);
 }
 
-void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
-  Nan::SetMethod(module, "exports", RunCallback);
+//void Init(v8::Local<v8::Object> exports, v8::Local<v8::Object> module) {
+//  Nan::SetMethod(module, "exports", RunCallback);
+//}
+
+void Init(v8::Local<v8::Object> exports) {
+	exports->Set(Nan::New("snapshot").ToLocalChecked(),
+		Nan::New<v8::FunctionTemplate>(RunCallback)->GetFunction());
 }
 
 NODE_MODULE(addon, Init)

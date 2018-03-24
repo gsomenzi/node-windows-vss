@@ -1,20 +1,19 @@
 {
-  "name": "node-microsoft-vss",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node-gyp rebuild",
-    "start": "node index"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "gypfile": true,
   "dependencies": {
     "bindings": "^1.2.1",
     "nan": "^2.4.0",
     "node-sass": "^4.7.2"
-  }
+  },
+  "description": "",
+  "gypfile": true,
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "node-microsoft-vss",
+  "scripts": {
+    "test": "node test",
+    "install": "node-gyp rebuild"
+  },
+  "version": "0.1.0"
 }

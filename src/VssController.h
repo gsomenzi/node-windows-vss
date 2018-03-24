@@ -1,7 +1,6 @@
 #include <vss.h>
 #include <vswriter.h>
 #include <vsbackup.h>
-#include <string>
 #include <iostream>
 
 using namespace std;
