@@ -15,7 +15,11 @@ function takeSnapshot(volume, callback) {
 	if (typeof volume !== 'string') return callback(new TypeError('Volume name must to be a valid string.'))
 	if (!regexpVolume.test(volume)) return callback(new Error('The volume you entered does not appear to be in a valid format.'))
 	addon.snapshot(volume, (err, snapshotPath) => {
-		if (err) return callback(err, null)
+		if (err) {
+			let newError = new Error(err)
+			return callback(newError, null)
+		}
+		if (!snapshotPath) return callback(new Error('Fail while trying to take the snapshot.'))
 		return callback(null, snapshotPath)
 	})
 }

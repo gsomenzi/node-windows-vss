@@ -37,8 +37,26 @@ void RunCallback(const Nan::FunctionCallbackInfo<v8::Value>& info) {
 	wchar_t* wcharvolume = const_cast<wchar_t*>(wstrvolume.c_str());
 	// VSS
 	VssController *vssController = new VssController();
+	// IF CANNOT INITIALIZE BACKUP
+	if (!vssController->getCurrentErrMsg().empty()) {
+		v8::Local<v8::Value> argv[2] = { Nan::New(vssController->getCurrentErrMsg()).ToLocalChecked(), Nan::Null() };
+		Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, 2, argv);
+		exit(0);
+	}
 	vssController->InicializarBackup();
+	// IF CANNOT INITIALIZE BACKUP
+	if (!vssController->getCurrentErrMsg().empty()) {
+		v8::Local<v8::Value> argv[2] = { Nan::New(vssController->getCurrentErrMsg()).ToLocalChecked(), Nan::Null() };
+		Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, 2, argv);
+		exit(0);
+	}
 	vssController->ConfigurarBackup(VSS_BT_INCREMENTAL, VSS_CTX_BACKUP);
+	// IF CANNOT INITIALIZE BACKUP
+	if (!vssController->getCurrentErrMsg().empty()) {
+		v8::Local<v8::Value> argv[2] = { Nan::New(vssController->getCurrentErrMsg()).ToLocalChecked(), Nan::Null() };
+		Nan::MakeCallback(Nan::GetCurrentContext()->Global(), cb, 2, argv);
+		exit(0);
+	}
 	snapshotSetId = vssController->IniciarSnapshotSet();
 	snapshotId = vssController->AdicionarUnidade(wcharvolume);
 	vssController->PepararBackup();

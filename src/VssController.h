@@ -2,6 +2,7 @@
 #include <vswriter.h>
 #include <vsbackup.h>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ private:
 	IVssBackupComponents * backupComponents;
 	HMODULE vssapiBase;
 	HRESULT result;
+	string errMsg;
 public:
 	VssController();
 	~VssController();
@@ -33,5 +35,6 @@ public:
 	void ExecutarSnapshot();
 	VSS_SNAPSHOT_PROP PropriedadesSnapshot(VSS_ID idSnapshot);
 	void FinalizarBackup(VSS_SNAPSHOT_PROP propriedadesSnapshot);
+	string getCurrentErrMsg();
 };
 
