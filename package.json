@@ -15,5 +15,5 @@
     "test": "node test",
     "install": "node-gyp rebuild"
   },
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
