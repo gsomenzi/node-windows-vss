@@ -1,14 +1,14 @@
 {
-  "author": "",
+  "author": "Guilherme Somenzi <guilherme@somenzi.me>",
   "dependencies": {
     "bindings": "^1.2.1",
     "nan": "^2.4.0",
     "node-sass": "^4.7.2"
   },
-  "description": "",
+  "description": "Native bindings to take advantage of Microsoft Windows Volume Shadow Copies.",
   "gypfile": true,
   "keywords": [],
-  "license": "ISC",
+  "license": "MIT",
   "main": "index.js",
   "name": "node-microsoft-vss",
   "scripts": {
