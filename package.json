@@ -7,7 +7,7 @@
   },
   "description": "Native bindings to take advantage of Microsoft Windows Volume Shadow Copies.",
   "gypfile": true,
-  "keywords": [],
+  "keywords": ["microsoft", "windows", "vss", "shadow copies", "backup"],
   "license": "MIT",
   "main": "index.js",
   "name": "node-microsoft-vss",
